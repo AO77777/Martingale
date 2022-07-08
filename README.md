@@ -1,6 +1,6 @@
 # Martingale Simulator
 
-Martingale Simulator written in rust.
+Simple martingale Simulator written in rust with starting amount, target, initial bet, probability and bet multiplier on loss. Computes success rate over specified iteration size.
 
 ## build and run
 
