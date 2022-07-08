@@ -6,6 +6,6 @@ Martingale Simulator written in rust.
 
 ```
 git clone https://github.com/AO77777/Martingale
-cd martingale
+cd Martingale
 cargo run --release
 ```
