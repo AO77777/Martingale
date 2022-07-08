@@ -162,9 +162,9 @@ impl eframe::App for Variables {
                 }
                 //Display Results
                 else{
-                    ui.label("Success Rate: ".to_owned() + &self.success_rate.to_string() + "%");
-                    ui.label("Average bets to reach target: ".to_owned() + &self.average_bet_number_win.to_string());
-                    ui.label("Average bets to reach $0: ".to_owned() + &self.average_bet_number_loss.to_string());
+                    ui.label("Success Rate:   ".to_owned() + &self.success_rate.to_string() + "%");
+                    ui.label("Average bets to reach target:   ".to_owned() + &self.average_bet_number_win.to_string());
+                    ui.label("Average bets to reach $0:   ".to_owned() + &self.average_bet_number_loss.to_string());
 
                     if ui.button("Reset").clicked(){
                         self.success_rate = 0.0;
