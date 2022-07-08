@@ -17,7 +17,8 @@ struct Variables {
     iterations: usize,
 
     success_rate:f64,
-    average_bet_number: f64,
+    average_bet_number_win: f64,
+    average_bet_number_loss: f64,
 
     can_exit: bool,
     is_exiting: bool,
@@ -38,7 +39,8 @@ impl Default for Variables {
             iterations: 1000,
 
             success_rate: 0.0,
-            average_bet_number: 0.0,
+            average_bet_number_win: 0.0,
+            average_bet_number_loss: 0.0,
 
             can_exit: false,
             is_exiting: false,
@@ -106,15 +108,17 @@ impl eframe::App for Variables {
                 //Simulation done
                 if self.done == false {
 
-                    let mut outcomes: Vec<bool> = vec![];
-                    let mut outcome_bet_numbers: Vec<u32> = vec![];
+                    let mut outcome_win:u64 = 0;
+                    let mut outcome_win_bet_numbers:u64 = 0;
+                    let mut outcome_loss:u64 = 0;
+                    let mut outcome_loss_bet_numbers:u64 = 0;
 
                     let balance_start = self.balance;
                     let bet_start = self.bet_amount;
 
                     for _ in 0..=self.iterations{
 
-                        let mut bet_number:u32 = 0;
+                        let mut bet_number:u64 = 0;
                         while self.balance > 0.0 && self.balance < self.target {
             
                             //Random value
@@ -138,31 +142,34 @@ impl eframe::App for Variables {
                         
                         
                         if self.balance >= self.target{
-                            outcomes.push(true);
+                            outcome_win += 1;
+                            outcome_win_bet_numbers += bet_number;
                         }
                         else
                         {
-                            outcomes.push(false);
+                            outcome_loss += 1;
+                            outcome_loss_bet_numbers += bet_number;
                         }
-
-                        outcome_bet_numbers.push(bet_number);
 
                         //Reset balance and bet amount each iteration
                         self.balance = balance_start;
                         self.bet_amount = bet_start;
                     }
-                    self.success_rate = (outcomes.iter().filter(|&n| *n == true).count() as f64/outcomes.len() as f64) * 100.0;
-                    self.average_bet_number = outcome_bet_numbers.iter().sum::<u32>() as f64/outcome_bet_numbers.len() as f64;
+                    self.success_rate = (outcome_win as f64)/(outcome_win as f64 + outcome_loss as f64) * 100.0;
+                    self.average_bet_number_win = (outcome_win_bet_numbers as f64)/(outcome_win as f64);
+                    self.average_bet_number_loss = (outcome_loss_bet_numbers as f64)/(outcome_loss as f64);
                     self.done = true;
                 }
                 //Display Results
                 else{
                     ui.label("Success Rate: ".to_owned() + &self.success_rate.to_string() + "%");
-                    ui.label("Average bet until win/lose ".to_owned() + &self.average_bet_number.to_string());
+                    ui.label("Average bets until win ".to_owned() + &self.average_bet_number_win.to_string());
+                    ui.label("Average bets until lose ".to_owned() + &self.average_bet_number_loss.to_string());
 
                     if ui.button("Reset").clicked(){
                         self.success_rate = 0.0;
-                        self.average_bet_number = 0.0;
+                        self.average_bet_number_win = 0.0;
+                        self.average_bet_number_loss = 0.0;
                         self.done = false;
                         self.run = false;
                     }
