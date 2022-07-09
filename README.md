@@ -1,6 +1,6 @@
 # Martingale Simulator
 
-Simple martingale Simulator using egui rust. Input starting amount that can be divided into batches, target, initial bet, probability and bet multiplier. Computes average success rate and number of bets over specified iteration size for martingale and inverse martingale betting.
+Simple martingale Simulator using the rust egui libuary. Input starting amount that can be divided into batches, target, initial bet, probability and bet multiplier. Computes average success rate and number of bets over specified iteration size for martingale and inverse martingale betting.
 
 ## build and run
 
