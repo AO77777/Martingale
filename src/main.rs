@@ -8,8 +8,7 @@ struct Variables {
     done:bool, 
 
     win_probability: f64,
-    risk: f64,
-    reward: f64,
+    rr: f64,
 
     balance: f64,
     batch_size: f64,
@@ -39,8 +38,7 @@ impl Variables {
             done: false, 
 
             win_probability: 50.0,
-            risk: 1.0,
-            reward: 1.0,
+            rr: 1.0,
 
             balance: 1000.0,
             batch_size: 1000.0,
@@ -89,13 +87,9 @@ impl eframe::App for Variables {
                         if self.win_probability < 1.0 {self.win_probability = 1.0;}
                         if self.win_probability > 99.0 {self.win_probability = 99.0;}
 
-                        ui.label("Risk:");
-                        ui.add(egui::DragValue::new(&mut self.risk).speed(0.01));
-                        if self.risk < 1.0 {self.risk = 1.0;}
-
-                        ui.label("Reward:");
-                        ui.add(egui::DragValue::new(&mut self.reward).speed(0.01));
-                        if self.reward < 1.0 {self.reward = 1.0;}
+                        ui.label("Reward : Risk:");
+                        ui.add(egui::DragValue::new(&mut self.rr).speed(0.01));
+                        if self.rr < 1.0 {self.rr = 1.0;}
                     });
                     ui.horizontal(|ui| {
 
@@ -178,13 +172,13 @@ impl eframe::App for Variables {
                                 //Win
                                 if roll <= self.win_probability{
 
-                                    self.batch_size += self.bet_amount * self.reward;
+                                    self.batch_size += self.bet_amount * self.rr;
                                     self.bet_amount = bet_start;
                                 }
 
                                 //Loss
                                 else{
-                                    self.batch_size -= self.bet_amount * self.risk;
+                                    self.batch_size -= self.bet_amount;
                                     self.bet_amount *= self.bet_multiplier;    
                                 } 
 
@@ -254,13 +248,13 @@ impl eframe::App for Variables {
                                 //Win
                                 if roll <= self.win_probability{
 
-                                    self.batch_size += self.bet_amount * self.reward;
+                                    self.batch_size += self.bet_amount * self.rr;
                                     self.bet_amount *= self.bet_multiplier;
                                 }
 
                                 //Loss
                                 else{
-                                    self.batch_size -= self.bet_amount * self.risk;
+                                    self.batch_size -= self.bet_amount;
                                     self.bet_amount = bet_start;   
                                 } 
 
